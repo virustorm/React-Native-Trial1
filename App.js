@@ -2,19 +2,33 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import Header from './Components/Header';
 import ListItem from './Components/ListItem';
+import AddItem from './Components/AddItem';
 
 const App = () => {
 	const [ items, setItems ] = useState([
-		{ id: Math.random(), text: 'Milk' },
-		{ id: Math.random(), text: 'Eggs' },
-		{ id: Math.random(), text: 'Bread' },
-		{ id: Math.random(), text: 'Juice' }
+		{ id: Math.floor(Math.random() * 100000), text: 'Milk' },
+		{ id: Math.floor(Math.random() * 100000), text: 'Eggs' },
+		{ id: Math.floor(Math.random() * 100000), text: 'Bread' },
+		{ id: Math.floor(Math.random() * 100000), text: 'Juice' }
 	]);
+
+	const deleteItem = (id) => {
+		setItems((prevItems) => {
+			return prevItems.filter((item) => item.id != id);
+		});
+	};
+
+	const addItem = (text) => {
+		setItems((prevItems) => {
+			return [ { id: Math.floor(Math.random() * 100000), text }, ...prevItems ];
+		});
+	};
 
 	return (
 		<View style={styles.container}>
 			<Header />
-			<FlatList data={items} renderItem={({ item }) => <ListItem item={item} />} />
+			<AddItem addItem={addItem} />
+			<FlatList data={items} renderItem={({ item }) => <ListItem item={item} deleteItem={deleteItem} />} />
 		</View>
 	);
 };
